@@ -7,11 +7,10 @@ st.title("Google Sheets 連線測試")
 
 def get_gspread_client():
     try:
-        # 直接讀取一整串 JSON 設定
-        raw_json = st.secrets["gcp_service_account"]["json_str"]
+        # 這裡要對應剛才改好的 key 名稱
+        raw_json = st.secrets["json_str"]
         creds_dict = json.loads(raw_json)
         
-        # 確保 private_key 的換行正確
         if "private_key" in creds_dict:
             creds_dict["private_key"] = creds_dict["private_key"].replace("\\n", "\n")
         
