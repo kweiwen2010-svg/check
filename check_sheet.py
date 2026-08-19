@@ -6,12 +6,13 @@ st.title("Google Sheets 連線測試")
 
 def get_gspread_client():
     try:
-        # 直接把 Streamlit Secrets 的 gcp_service_account 轉成字典
         creds_dict = dict(st.secrets["gcp_service_account"])
         
-        # 確保 private_key 的換行正確
-        if "private_key" in creds_dict:
-            creds_dict["private_key"] = creds_dict["private_key"].replace("\\n", "\n")
+        # 強制把私鑰裡面所有寫出來的 \n 或多餘空白全部轉成真實的換行字元
+        raw_key = creds_dict["private_key"]
+        # 確保開頭與結尾正確，並將跳脫字元轉回換行
+        clean_key = raw_key.replace("\\n", "\n")
+        creds_dict["private_key"] = clean_key
         
         scopes = [
             "https://www.googleapis.com/auth/spreadsheets",
