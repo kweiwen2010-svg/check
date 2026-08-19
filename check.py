@@ -9,7 +9,6 @@ st.title("📱 我的隨身資料記錄器")
 # 1. 自動初始化輕量雲端資料庫
 @st.cache_resource
 def get_connection():
-    # 建立一個名為 my_notes.db 的資料庫
     conn = sqlite3.connect("my_notes.db", check_same_thread=False)
     c = conn.cursor()
     c.execute('''
