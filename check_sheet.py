@@ -3,14 +3,13 @@ import gspread
 import json
 from google.oauth2.service_account import Credentials
 
+st.title("Google Sheets 連線測試")
+
 def get_gspread_client():
     try:
-        # 將 secrets 轉為字典
-        creds_dict = dict(st.secrets["gcp_service_account"])
-        
-        # 強制修復：使用 encode().decode('unicode_escape') 處理 \n
-        # 這會把文字中的 "\n" 轉換為真正的系統換行符號
-        creds_dict["private_key"] = creds_dict["private_key"].encode("utf-8").decode("unicode_escape")
+        # 直接讀取完整的 JSON 字串並轉為字典
+        json_str = st.secrets["gcp_service_account"]["json_key"]
+        creds_dict = json.loads(json_str)
         
         scopes = [
             "https://www.googleapis.com/auth/spreadsheets",
@@ -23,7 +22,7 @@ def get_gspread_client():
         st.error(f"憑證解析錯誤: {e}")
         return None
 
-# 執行
-client = get_gspread_client()
-if client:
-    st.success("✅ 手機端憑證解析成功！")
+if st.button("開始測試連線"):
+    client = get_gspread_client()
+    if client:
+        st.success("✅ 手機端憑證解析成功！")
