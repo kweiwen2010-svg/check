@@ -6,10 +6,10 @@ st.title("Google Sheets 連線測試")
 
 def get_gspread_client():
     try:
-        # 直接把 st.secrets 裡的整個 gcp_service_account 轉成 dict
+        # 直接從 Streamlit 雲端安全的 Secrets 讀取
         creds_dict = dict(st.secrets["gcp_service_account"])
         
-        # 確保私鑰裡的換行符號被正確解析（支援直接讀取）
+        # 關鍵：讓 Python 自己去處理煩人的換行符號
         if "private_key" in creds_dict:
             creds_dict["private_key"] = creds_dict["private_key"].replace("\\n", "\n")
         
@@ -27,4 +27,4 @@ def get_gspread_client():
 if st.button("開始測試連線"):
     client = get_gspread_client()
     if client:
-        st.success("✅ 憑證解析成功，成功連線！")
+        st.success("✅ 連線成功！")
