@@ -1,15 +1,17 @@
 import streamlit as st
 import gspread
+import json
 from google.oauth2.service_account import Credentials
 
 st.title("Google Sheets 連線測試")
 
 def get_gspread_client():
     try:
-        # 直接從 Streamlit 雲端安全的 Secrets 讀取
-        creds_dict = dict(st.secrets["gcp_service_account"])
+        # 直接讀取一整串 JSON 設定
+        raw_json = st.secrets["gcp_service_account"]["json_str"]
+        creds_dict = json.loads(raw_json)
         
-        # 關鍵：讓 Python 自己去處理煩人的換行符號
+        # 確保 private_key 的換行正確
         if "private_key" in creds_dict:
             creds_dict["private_key"] = creds_dict["private_key"].replace("\\n", "\n")
         
