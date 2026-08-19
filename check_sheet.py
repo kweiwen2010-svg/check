@@ -29,7 +29,7 @@ if "gcp_service_account" in st.secrets:
         # 提醒使用者去 Google Sheet 共用
         st.warning(f"⚠️ 請務必確認你的 Google Sheet 已經分享（共用）給這個 Email：\n`{creds.service_account_email}`")
         
-    .except Exception as e:
+    except Exception as e:
         st.error(f"❌ 憑證解析失敗，格式可能寫錯：\n`{e}`")
         st.stop()
 else:
